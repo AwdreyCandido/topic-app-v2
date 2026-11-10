@@ -12,6 +12,7 @@ const supportedBlocks = new Set([
   "codeBlock",
   "table",
   "toggleListItem",
+  "image",
 ]);
 
 export function textDocument(text = ""): RichDocument {
@@ -47,7 +48,12 @@ function inlineText(value: Json | undefined): string {
 export function documentText(doc: RichDocument): string {
   function extract(blocks: DocumentBlock[]): string[] {
     return blocks.flatMap((block) => [
-      inlineText(block.content),
+      inlineText(block.content) ||
+        (block.type === "image"
+          ? typeof block.props?.caption === "string" && block.props.caption.trim()
+            ? block.props.caption
+            : "Imagem"
+          : ""),
       ...extract(block.children ?? []),
     ]);
   }
@@ -169,6 +175,17 @@ export function validateDocument(input: unknown): RichDocument {
           throw new Error("Propriedades de bloco inválidas.");
         assertInline(block.props);
         const props = block.props as Record<string, unknown>;
+        if (block.type === "image") {
+          const url = props.url;
+          if (
+            typeof url !== "string" ||
+            (url !== "" &&
+              !url.startsWith("https://") &&
+              !/^topic-image:\/\/[\da-f-]{36}\/[\da-f-]{36}\.(png|jpg|webp|gif|avif)$/i.test(url))
+          ) {
+            throw new Error("Endereço da imagem inválido.");
+          }
+        }
         if (
           block.type === "heading" &&
           props.level !== undefined &&
