@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f2f2f7;
+    --surface: #ffffff;
+    --surface-muted: #f8f8fc;
+    --surface-hover: #ededf5;
+    --foreground: #20212c;
+    --muted: #747582;
+    --subtle: #9698a5;
+    --border: #e6e6ef;
+    --border-strong: #d3d4e0;
+    --primary: #2133ff;
+    --primary-hover: #1424e0;
+    --primary-ink: #2133ff;
+    --primary-soft: #eeefff;
+    --primary-border: #d8dcff;
+    --focus: #6877ff;
+    --success: #16845d;
+    --success-soft: #e8f6ef;
+    --warning: #94620b;
+    --warning-soft: #fff5dd;
+    --danger: #cc3d4e;
+    --danger-soft: #fff0f2;
+    color-scheme: light;
+  }
+  .dark {
+    --background: #101116;
+    --surface: #191b23;
+    --surface-muted: #1e202b;
+    --surface-hover: #272a36;
+    --foreground: #f2f2f7;
+    --muted: #a0a2b4;
+    --subtle: #7c7f93;
+    --border: #2a2d3b;
+    --border-strong: #3e4257;
+    --primary-hover: #3546ff;
+    --primary-ink: #9ba4ff;
+    --primary-soft: #232641;
+    --primary-border: #3a416c;
+    --focus: #96a0ff;
+    --success: #76d3ae;
+    --success-soft: #1c342c;
+    --warning: #f1c167;
+    --warning-soft: #39301f;
+    --danger: #ff98a4;
+    --danger-soft: #39222c;
+    color-scheme: dark;
+  }
+  html {
+    font-size: 62.5%;
+  }
+  body {
+    @apply m-0 bg-background font-sans text-base text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    @apply cursor-pointer transition-colors motion-reduce:transition-none;
+  }
+  button:disabled {
+    @apply cursor-not-allowed opacity-40;
+  }
+  a {
+    @apply text-inherit no-underline;
+  }
+  :focus-visible {
+    @apply outline outline-2 outline-focus outline-offset-2;
+  }
+  input,
+  select,
+  textarea {
+    @apply accent-primary text-foreground;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-subtle;
+  }
+  textarea {
+    @apply resize-y;
+  }
+  svg {
+    @apply h-5 w-5 shrink-0;
+  }
+  kbd {
+    @apply inline-flex items-center justify-center rounded-sm border border-border-strong bg-surface px-1 py-[0.1rem] font-sans text-xs font-normal text-muted;
+  }
+}
