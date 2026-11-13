@@ -58,8 +58,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Figtree", "sans-serif"],
-        heading: ["Sora", "sans-serif"],
+        sans: ["Exo", "sans-serif"],
+        heading: ["Saira", "sans-serif"],
       },
       colors: {
         background: color("background"),
