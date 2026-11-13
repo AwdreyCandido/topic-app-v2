@@ -83,35 +83,45 @@ export default function BlockEditor({
     >[],
     domAttributes: { editor: { "aria-label": label, "data-testid": label } },
   });
-  const addImages = async (files: FileList | null) => {
-    if (!files?.length) return;
-    setImageError("");
-    setUploadingImage(true);
-    try {
-      let anchor = editor.getTextCursorPosition().block;
-      for (const file of Array.from(files)) {
-        const url = await uploadEditorImage(file);
-        anchor = editor.insertBlocks(
-          [{ type: "image", props: { url, name: file.name } }],
-          anchor,
-          "after",
-        )[0];
-      }
-      const paragraph = editor.insertBlocks(
-        [{ type: "paragraph" }],
-        anchor,
+
+const addImages = async (files: FileList | null) => {
+  if (!files?.length) return;
+
+  setImageError("");
+  setUploadingImage(true);
+
+  try {
+    let anchorId = editor.getTextCursorPosition().block.id;
+
+    for (const file of Array.from(files)) {
+      const url = await uploadEditorImage(file);
+
+      const [insertedBlock] = editor.insertBlocks(
+        [{ type: "image", props: { url, name: file.name } }],
+        anchorId,
         "after",
-      )[0];
-      editor.setTextCursorPosition(paragraph);
-    } catch (error) {
-      setImageError(
-        error instanceof Error ? error.message : "Falha ao enviar imagem.",
       );
-    } finally {
-      setUploadingImage(false);
-      if (inputRef.current) inputRef.current.value = "";
+
+      anchorId = insertedBlock.id;
     }
-  };
+
+    const [paragraph] = editor.insertBlocks(
+      [{ type: "paragraph" }],
+      anchorId,
+      "after",
+    );
+
+    editor.setTextCursorPosition(paragraph.id);
+  } catch (error) {
+    setImageError(
+      error instanceof Error ? error.message : "Falha ao enviar imagem.",
+    );
+  } finally {
+    setUploadingImage(false);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+};
+
   return (
     <div className="min-w-0">
       {!readOnly && (
